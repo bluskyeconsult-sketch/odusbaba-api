@@ -1,6 +1,6 @@
-import { Headers } from "next/dist/compiled/@edge-runtime/primitives";
+export function validateApiKey(request: Request) {
+  const apiKey = request.headers.get("x-api-key");
+  const validKey = process.env.API_KEY;
 
-export function validateApiKey(headers: Headers | globalThis.Headers): boolean {
-  const apiKey = headers.get("x-api-key");
-  return apiKey === process.env.ODUSBABA_API_KEY;
+  return apiKey === validKey;
 }
