@@ -2,15 +2,17 @@ import { NextResponse } from "next/server";
 import { validateApiKey } from "@/lib/auth";
 
 export async function GET(request: Request) {
-  if (!validateApiKey(request.headers)) {
+  const isValid = validateApiKey(request);
+
+  if (!isValid) {
     return NextResponse.json(
-      { error: "Unauthorized" },
+      { status: "error", message: "Invalid API Key" },
       { status: 401 }
     );
   }
 
   return NextResponse.json({
     status: "ok",
-    message: "ODUSBABA API is live and secured"
+    message: "ODUSBABA API is live",
   });
 }
