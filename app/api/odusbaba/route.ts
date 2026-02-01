@@ -1,18 +1,15 @@
 import { NextResponse } from "next/server";
-import { validateApiKey } from "@/lib/auth";
+import { resolveContext, enforceRules } from "@/lib/odusbaba";
 
-export async function GET(request: Request) {
-  const isValid = validateApiKey(request);
+export async function GET(req: Request) {
+  const context = await resolveContext(req);
 
-  if (!isValid) {
-    return NextResponse.json(
-      { status: "error", message: "Invalid API Key" },
-      { status: 401 }
-    );
-  }
+  enforceRules(context, "public");
 
   return NextResponse.json({
-    status: "ok",
-    message: "ODUSBABA API is live",
+    status: "operational",
+    governedBy: "ODUSBABA",
+    role: context.role,
+    plan: context.plan,
   });
 }
