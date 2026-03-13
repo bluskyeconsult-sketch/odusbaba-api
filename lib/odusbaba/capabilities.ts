@@ -1,12 +1,4 @@
-export type Capability = {
-  aiDepth: "none" | "basic" | "advanced";
-  jobAccess: boolean;
-  cvReview: boolean;
-  hireVA: boolean;
-  admin: boolean;
-};
-
-export const CAPABILITY_PROFILES: Record<string, Capability> = {
+export const CAPABILITY_PROFILES = {
   free: {
     aiDepth: "none",
     jobAccess: true,
