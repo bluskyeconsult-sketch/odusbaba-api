@@ -1,27 +1,21 @@
 import { NextResponse } from "next/server";
-import { resolveContext } from "@/lib/odusbaba/context";
-import { enforceRules } from "@/lib/odusbaba/rules";
+import { getUserContext } from "@/lib/odusbaba/context";
+import { applyRules } from "@/lib/odusbaba/rules";
 
-/**
- * GET route
- * Context + Governance enforced
- */
 export async function GET(req: Request) {
-  // 1️⃣ Resolve ODUSBABA context for this request
-  const context = await resolveContext(req);
+  // 1. Get user context
+  const context = await getUserContext(req);
 
-  // 2️⃣ Enforce governance rules
-  // Example: Only admin can access
-  enforceRules(context, "admin");
+  // 2. Apply governance rules
+  const allowed = applyRules(context);
+  if (!allowed) {
+    return NextResponse.json({ error: "Access denied" }, { status: 403 });
+  }
 
-  // 3️⃣ Respond with status + context snapshot (for debug/testing)
+  // 3. Return status & context snapshot
   return NextResponse.json({
     status: "operational",
-    contextSnapshot: {
-      userId: context.user?.id ?? "anonymous",
-      tier: context.capability.tier,
-      aiCallsAllowed: context.capability.limits.aiCalls,
-    },
+    contextSnapshot: context,
     timestamp: new Date().toISOString(),
   });
 }
