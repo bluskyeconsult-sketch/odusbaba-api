@@ -1,45 +1,29 @@
-import { createClient } from "@supabase/supabase-js";
-import { resolveEntitlement } from "./entitlement";
+// lib/odusbaba/context.ts
+import { NextRequest } from "next/server";
 
-// Initialize Supabase
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_KEY!
-);
+/**
+ * getUserContext
+ * Resolves user identity, plan, role, and capabilities
+ */
+export async function getUserContext(req: NextRequest) {
+  // In production, extract user from headers/session/token
+  // For testing, fallback to demo user
+  const user = {
+    id: req.headers.get("x-user-id") || "anonymous",
+    role: req.headers.get("x-user-role") || "public", // public | subscriber | admin
+    stripe_plan_id: req.headers.get("x-stripe-plan") || "free",
+  };
 
-export async function getUserContext(req: Request) {
-  let user = null;
+  // Capability placeholder
+  const capability = {
+    tier: user.role,
+    limits: {
+      aiCalls: user.role === "admin" ? 1000 : user.role === "subscriber" ? 50 : 10,
+    },
+  };
 
-  try {
-    // 1. Extract token from headers (Bearer token)
-    const token = req.headers.get("authorization")?.replace("Bearer ", "");
-
-    if (token) {
-      const { data, error } = await supabase.auth.getUser(token);
-
-      if (!error && data.user) {
-        user = {
-          id: data.user.id,
-          role: "subscriber", // default; can refine later
-          stripe_plan_id: "pro", // for example; replace with real mapping
-        };
-      }
-    }
-  } catch (err) {
-    console.warn("Supabase auth failed, falling back to anonymous:", err);
-  }
-
-  // 2. Fallback anonymous if user not resolved
-  if (!user) {
-    user = {
-      id: "anonymous",
-      role: "public",
-      stripe_plan_id: "free",
-    };
-  }
-
-  // 3. Map Stripe plan to capability
-  const capability = resolveEntitlement(user.stripe_plan_id);
-
-  return { user, capability };
+  return {
+    user,
+    capability,
+  };
 }
