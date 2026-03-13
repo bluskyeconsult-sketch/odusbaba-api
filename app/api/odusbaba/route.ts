@@ -4,7 +4,7 @@ import { resolveContext, enforceRules } from "@/lib/odusbaba";
 export async function GET(req: Request) {
   const context = await resolveContext(req);
 
-  enforceRules(context, "admin");
+  enforceRules(context, "public");
 
   return NextResponse.json({
     status: "operational",
