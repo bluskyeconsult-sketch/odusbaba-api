@@ -1,16 +1,18 @@
-import { OdusbabaContext } from "./context";
+// lib/odusbaba/rules.ts
 
-export function enforceRules(
-  context: OdusbabaContext,
-  capability: string
-) {
-  if (capability === "admin" && context.role !== "admin") {
-    throw new Error("Access denied");
+/**
+ * applyRules
+ * Governance enforcement
+ * Returns true if allowed, false if access denied
+ */
+export function applyRules(context: any) {
+  // Example rules:
+  // Only admin can access some routes
+  if (context.user.role === "public") {
+    // Deny restricted actions
+    return false;
   }
 
-  if (capability === "advanced_ai" && context.plan === "free") {
-    throw new Error("Upgrade required");
-  }
-
+  // Subscriber or admin: allowed
   return true;
 }
