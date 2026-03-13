@@ -1,29 +1,32 @@
-// lib/odusbaba/context.ts
-import { NextRequest } from "next/server";
+import { createClient } from "@supabase/supabase-js";
+import { resolveEntitlement } from "./entitlement";
 
-/**
- * getUserContext
- * Resolves user identity, plan, role, and capabilities
- */
-export async function getUserContext(req: NextRequest) {
-  // In production, extract user from headers/session/token
-  // For testing, fallback to demo user
-  const user = {
-    id: req.headers.get("x-user-id") || "anonymous",
-    role: req.headers.get("x-user-role") || "public", // public | subscriber | admin
-    stripe_plan_id: req.headers.get("x-stripe-plan") || "free",
-  };
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_KEY!
+);
 
-  // Capability placeholder
-  const capability = {
-    tier: user.role,
-    limits: {
-      aiCalls: user.role === "admin" ? 1000 : user.role === "subscriber" ? 50 : 10,
-    },
-  };
+export async function getUserContext(req: Request) {
+  // 1. Extract user token from headers (replace with your auth method)
+  const token = req.headers.get("authorization")?.replace("Bearer ", "");
+  let user = null;
 
-  return {
-    user,
-    capability,
-  };
+  if (token) {
+    const { data } = await supabase.auth.getUser(token);
+    user = data.user;
+  }
+
+  // 2. Fallback anonymous
+  if (!user) {
+    user = {
+      id: "anonymous",
+      role: "public",
+      stripe_plan_id: "free"
+    };
+  }
+
+  // 3. Resolve capability from Stripe plan
+  const capability = resolveEntitlement(user.stripe_plan_id);
+
+  return { user, capability };
 }
