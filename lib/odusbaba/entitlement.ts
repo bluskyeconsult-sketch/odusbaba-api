@@ -1,6 +1,6 @@
-import { CAPABILITY_PROFILES, Capability } from "./capabilities";
+import { CAPABILITY_PROFILES } from "./capabilities";
 
-export function resolveEntitlement(stripePlanId?: string): Capability {
+export function resolveEntitlement(stripePlanId?: string) {
   if (!stripePlanId) {
     return CAPABILITY_PROFILES.free;
   }
