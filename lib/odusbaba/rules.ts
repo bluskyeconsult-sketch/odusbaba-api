@@ -1,17 +1,21 @@
+// lib/odusbaba/rules.ts
 import { UserContext } from "./types";
 
+/**
+ * applyRules
+ * Phase 2.2: Controlled enforcement (observe, do not block)
+ */
 export function applyRules(context: UserContext) {
-  const { role } = context.user;
+  const role = context.user.role;
 
-  const rules = {
-    canUseAI: role !== "public",
-    maxAiCalls: context.capability.limits.aiCalls,
-    adminOnly: role === "admin",
-  };
-
-  // Phase 2.2 = observe, not block
   return {
-    allowed: true,
-    rules,
+    enforcementMode: "observe", // 🔒 critical: NOT "block"
+    permissions: {
+      canUseAI: role !== "public",
+      canAccessJobs: true,
+      canAccessHRTools: role !== "public",
+      adminOnly: role === "admin",
+    },
+    limits: context.capability.limits,
   };
 }
