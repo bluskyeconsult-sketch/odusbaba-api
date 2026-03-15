@@ -1,8 +1,14 @@
-export async function loadMemory(userId: string | null) {
-  if (!userId) return null;
-
-  // Placeholder for Supabase read
+export function readMemory(key: string) {
   return {
-    summary: "No prior state",
+    key,
+    source: "memory-stub",
+    value: null,
+  };
+}
+
+export function writeMemory(key: string, value: any) {
+  return {
+    key,
+    stored: true,
   };
 }
