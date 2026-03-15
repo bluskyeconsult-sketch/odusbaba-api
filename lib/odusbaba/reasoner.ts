@@ -1,12 +1,17 @@
-import { BOOM_VALUE_PROMPT } from "./boomvalue";
+import { BOOM_VALUE } from "./boomvalue";
+import { UserContext } from "./types";
 
-export async function reason(input: {
+export function reason({
+  intent,
+  context,
+}: {
   intent: string;
-  context: any;
-  memory: any;
+  context: UserContext;
 }) {
   return {
-    decision: "Reasoning placeholder",
-    source: "ODUSBABA",
+    intent,
+    evaluatedAgainst: BOOM_VALUE.principles,
+    userTier: context.user.role,
+    decision: "pending-external-reasoning",
   };
 }
