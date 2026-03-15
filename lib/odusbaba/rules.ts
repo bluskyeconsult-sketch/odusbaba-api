@@ -1,30 +1,17 @@
-// lib/odusbaba/rules.ts
+import { UserContext } from "./types";
 
-type Context = {
-  user: {
-    id: string;
-    role: string;
-    stripe_plan_id: string;
+export function applyRules(context: UserContext) {
+  const { role } = context.user;
+
+  const rules = {
+    canUseAI: role !== "public",
+    maxAiCalls: context.capability.limits.aiCalls,
+    adminOnly: role === "admin",
   };
-  capability: {
-    tier: string;
-    limits: {
-      aiCalls: number;
-    };
+
+  // Phase 2.2 = observe, not block
+  return {
+    allowed: true,
+    rules,
   };
-};
-
-export function applyRules(context: Context) {
-  // Hard deny invalid roles
-  if (!["public", "subscriber", "admin"].includes(context.user.role)) {
-    return false;
-  }
-
-  // Public users always allowed basic access
-  if (context.user.role === "public") {
-    return true;
-  }
-
-  // Subscriber and admin allowed
-  return true;
 }
