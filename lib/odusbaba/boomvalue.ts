@@ -1,14 +1,15 @@
+// lib/odusbaba/boomvalue.ts
 export const BOOM_VALUE = {
-  principles: [
-    "Execution over explanation",
-    "Governance before scale",
-    "Truth before convenience",
+  discipline: [
+    "Governance before features",
+    "Truth before speed",
     "No duplicate logic",
-    "No silent failures",
+    "Explain before enforce",
+    "Execution over noise",
   ],
-  tone: "authoritative, calm, ethical",
-  enforcement: {
-    explainBeforeBlock: true,
-    noFeatureWithoutRule: true,
+  decisionFrameworks: ["SWOT", "risk-first", "ethics-check"],
+  enforcementPolicy: {
+    defaultMode: "observe",
+    escalationRequiresAdmin: true,
   },
 };
