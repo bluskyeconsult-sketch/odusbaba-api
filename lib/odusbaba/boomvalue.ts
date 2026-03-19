@@ -1,15 +1,21 @@
 // lib/odusbaba/boomvalue.ts
+
 export const BOOM_VALUE = {
-  discipline: [
-    "Governance before features",
-    "Truth before speed",
-    "No duplicate logic",
-    "Explain before enforce",
-    "Execution over noise",
+  doctrine: [
+    "ODUSBABA governs all logic",
+    "No feature bypasses intelligence",
+    "Truth before persuasion",
+    "Execution over verbosity",
   ],
-  decisionFrameworks: ["SWOT", "risk-first", "ethics-check"],
   enforcementPolicy: {
-    defaultMode: "observe",
-    escalationRequiresAdmin: true,
+    observeFirst: true,
+    adminOnlyBlocking: true,
   },
+  platformScope: [
+    "AI Chat",
+    "Job Board",
+    "HR Advisory",
+    "Hire-VA",
+    "HR Tools",
+  ],
 };
