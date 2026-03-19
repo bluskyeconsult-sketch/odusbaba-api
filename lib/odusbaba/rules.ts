@@ -1,21 +1,18 @@
 // lib/odusbaba/rules.ts
-import { UserContext } from "./types";
 
-/**
- * applyRules
- * Phase 2.2: Controlled enforcement (observe, do not block)
- */
-export function applyRules(context: UserContext) {
-  const role = context.user.role;
+export const GOVERNANCE_MODE = "observe"; // observe | block
 
+export function evaluateAccess({
+  capability,
+  intent,
+}: {
+  capability: any;
+  intent?: any;
+}) {
+  // Observe only – never block yet
   return {
-    enforcementMode: "observe", // 🔒 critical: NOT "block"
-    permissions: {
-      canUseAI: role !== "public",
-      canAccessJobs: true,
-      canAccessHRTools: role !== "public",
-      adminOnly: role === "admin",
-    },
-    limits: context.capability.limits,
+    allowed: true,
+    mode: GOVERNANCE_MODE,
+    notes: "No enforcement active",
   };
 }
