@@ -1,35 +1,52 @@
 // lib/odusbaba/law.ts
 
-export type CountryCode = "UK" | "NG" | "US" | "CA" | "EU";
+export type CountryCode =
+  | "UK"
+  | "US"
+  | "CA"
+  | "IE"
+  | "DE"
+  | "NG"
+  | "ZA";
 
-export function getEmploymentLaw(country: CountryCode) {
-  const laws = {
+export function loadEmploymentLaw(country: CountryCode) {
+  const registry = {
     UK: {
-      minimumWage: "National Minimum Wage applies",
-      visaRules: "Right-to-work check mandatory",
-      contract: "Written statement required",
-    },
-    NG: {
-      minimumWage: "National Minimum Wage Act",
-      visaRules: "Work permit required for foreigners",
-      contract: "Written contract recommended",
+      authority: ["ACAS", "Employment Rights Act"],
+      dismissal: "Fair reason + procedure required",
+      visa: "Right-to-work mandatory",
     },
     US: {
-      minimumWage: "Federal & State minimum wage",
-      visaRules: "Employment authorization required",
-      contract: "At-will employment common",
+      authority: ["Department of Labor"],
+      dismissal: "At-will employment (exceptions apply)",
+      visa: "Employment authorization required",
     },
     CA: {
-      minimumWage: "Provincial minimum wage",
-      visaRules: "Work permit required",
-      contract: "Employment standards by province",
+      authority: ["Provincial Employment Standards"],
+      dismissal: "Notice or pay in lieu required",
+      visa: "Work permit required",
     },
-    EU: {
-      minimumWage: "Country-specific",
-      visaRules: "Work authorization varies",
-      contract: "EU labor directives apply",
+    IE: {
+      authority: ["Workplace Relations Commission"],
+      dismissal: "Unfair dismissal protections apply",
+      visa: "Employment permit required",
+    },
+    DE: {
+      authority: ["German Labour Courts"],
+      dismissal: "Strong employee protection",
+      visa: "Residence + work permit required",
+    },
+    NG: {
+      authority: ["Labour Act"],
+      dismissal: "Contractual compliance required",
+      visa: "Expat quota & work permit required",
+    },
+    ZA: {
+      authority: ["CCMA"],
+      dismissal: "Substantive & procedural fairness",
+      visa: "Work visa required",
     },
   };
 
-  return laws[country];
+  return registry[country];
 }
