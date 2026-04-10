@@ -1,5 +1,8 @@
 // lib/odusbaba/memory.ts
 
+/**
+ * SEMANTIC MEMORY (WHAT TO REMEMBER)
+ */
 export function summariseInteraction(input: {
   userId: string;
   intent: string;
@@ -10,5 +13,25 @@ export function summariseInteraction(input: {
     intent: input.intent,
     summary: input.outcome,
     created_at: new Date().toISOString(),
+  };
+}
+
+/**
+ * STORAGE ABSTRACTION (HOW MEMORY IS STORED)
+ * Supabase / Vector DB will replace internals later
+ */
+export function readMemory(key: string) {
+  return {
+    key,
+    source: "stub",
+    value: null,
+  };
+}
+
+export function writeMemory(key: string, value: unknown) {
+  return {
+    key,
+    stored: true,
+    value,
   };
 }
