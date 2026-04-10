@@ -1,0 +1,7 @@
+export type AdminAction =
+  | "APPROVE_WORKFORCE_SKILL"
+  | "REJECT_WORKFORCE_SKILL"
+  | "DOWNGRADE_USER"
+  | "FLAG_JOB"
+  | "BLOCK_USER"
+  | "UNBLOCK_USER";
