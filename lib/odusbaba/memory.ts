@@ -1,22 +1,14 @@
 // lib/odusbaba/memory.ts
 
-/**
- * Phase 2 memory abstraction
- * Supabase will replace internals later
- */
-
-export function readMemory(key: string) {
+export function summariseInteraction(input: {
+  userId: string;
+  intent: string;
+  outcome: string;
+}) {
   return {
-    key,
-    source: "stub",
-    value: null,
-  };
-}
-
-export function writeMemory(key: string, value: unknown) {
-  return {
-    key,
-    stored: true,
-    value,
+    user_id: input.userId,
+    intent: input.intent,
+    summary: input.outcome,
+    created_at: new Date().toISOString(),
   };
 }
