@@ -1,15 +1,19 @@
-export type UserRole = "public" | "subscriber" | "admin";
+// Shared ODUSBABA types
 
-export interface UserContext {
-  user: {
-    id: string;
-    role: UserRole;
-    stripe_plan_id: string;
-  };
-  capability: {
-    tier: UserRole;
-    limits: {
-      aiCalls: number;
-    };
-  };
-}
+export type SkillLevel = "unverified" | "verified" | "expert";
+
+export type WorkforceSkill = {
+  id: string;
+  name: string;
+  category: string;
+  level: SkillLevel;
+  rating: number; // 1–5
+  jobsCompleted: number;
+  country: string;
+  isPublic: boolean;
+};
+
+export type WorkforceProfile = {
+  userId: string;
+  skills: WorkforceSkill[];
+};
