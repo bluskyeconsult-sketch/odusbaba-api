@@ -1,11 +1,8 @@
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_KEY!
-);
+import { createServerSupabase } from "@/lib/supabase/server";
 
 export async function fetchApprovedWorkforceSkills() {
+  const supabase = createServerSupabase();
+
   const { data, error } = await supabase
     .from("workforce_skills")
     .select("*")
@@ -13,9 +10,9 @@ export async function fetchApprovedWorkforceSkills() {
     .order("trust_score", { ascending: false });
 
   if (error) {
-    console.error("Supabase error:", error);
+    console.error("WORKFORCE_FETCH_ERROR", error);
     return [];
   }
 
-  return data || [];
+  return data ?? [];
 }
