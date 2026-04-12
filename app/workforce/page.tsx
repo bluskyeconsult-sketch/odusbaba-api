@@ -1,8 +1,7 @@
 import WorkforceMarketplace from "@/components/workforce/WorkforceMarketplace";
-import { fetchApprovedWorkforceSkills } from "@/lib/workforce/fetchApprovedWorkforceSkills";
 
 export default async function WorkforcePage() {
-  const skills = await fetchApprovedWorkforceSkills();
+  const skills: any[] = [];
 
   const viewerCapabilities = {
     canContactWorkforce: false,
