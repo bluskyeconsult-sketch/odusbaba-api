@@ -1,7 +1,10 @@
+export const dynamic = "force-dynamic";
+
 import WorkforceMarketplace from "@/components/workforce/WorkforceMarketplace";
+import { fetchApprovedWorkforceSkills } from "@/lib/workforce/fetchApprovedWorkforceSkills";
 
 export default async function WorkforcePage() {
-  const skills: any[] = [];
+  const skills = await fetchApprovedWorkforceSkills();
 
   const viewerCapabilities = {
     canContactWorkforce: false,
