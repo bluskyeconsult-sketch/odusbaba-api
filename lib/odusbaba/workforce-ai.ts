@@ -1,21 +1,15 @@
-export async function aiVerifySkill(input: {
-  skill: string;
-  description: string;
-  evidence?: string;
+export async function aiReviewSkill(skill: {
+  skill_name: string;
+  description?: string;
 }) {
-  // Placeholder – NO external API yet
-  // You can plug OpenAI later
-
+  // Placeholder AI structure (no external API yet)
   const score =
-    input.description.length > 100 ? 0.8 : 0.4;
+    skill.skill_name.length > 5 ? 70 : 40;
 
   return {
-    score,
-    feedback:
-      score > 0.7
-        ? "Skill description is detailed and credible"
-        : "Insufficient detail provided",
-    recommended:
-      score > 0.7 ? "approve" : "review",
+    ai_score: score,
+    reasoning:
+      "Preliminary heuristic evaluation (replace with OpenAI later)",
+    flags: skill.skill_name.length < 3 ? ["too_generic"] : [],
   };
 }
