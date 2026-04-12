@@ -1,18 +1,19 @@
 // lib/odusbaba/rules.ts
 
-export const GOVERNANCE_MODE = "observe"; // observe | block
+import { enforce } from "./enforcement";
 
-export function evaluateAccess({
-  capability,
-  intent,
-}: {
-  capability: any;
-  intent?: any;
-}) {
-  // Observe only – never block yet
-  return {
-    allowed: true,
-    mode: GOVERNANCE_MODE,
-    notes: "No enforcement active",
-  };
+export type RuleContext = {
+  user?: any;
+  action: string;
+  payload?: any;
+};
+
+export function evaluateRules(context: RuleContext) {
+  // Example enforcement — extend later
+  enforce(
+    !!context.user,
+    "User must be authenticated"
+  );
+
+  return { allowed: true };
 }
