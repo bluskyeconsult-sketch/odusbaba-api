@@ -1,24 +1,21 @@
-import { assertAdmin } from "./admin-guard";
-
-export async function verifyWorkforceSkill({
-  admin,
-  skillId,
-  approve,
+export async function adminApproveSkill({
   supabase,
+  skillId,
+  admin,
 }: {
-  admin: any;
-  skillId: string;
-  approve: boolean;
   supabase: any;
+  skillId: string;
+  admin: any;
 }) {
-  assertAdmin(admin);
+  if (admin?.role !== "admin") {
+    throw new Error("UNAUTHORISED_ADMIN");
+  }
 
   const { error } = await supabase
     .from("workforce_skills")
     .update({
-      approved: approve,
-      approval_source: "admin",
-      approved_at: approve ? new Date().toISOString() : null,
+      status: "approved",
+      updated_at: new Date().toISOString(),
     })
     .eq("id", skillId);
 
