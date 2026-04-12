@@ -1,31 +1,23 @@
-import { NextResponse, NextRequest } from "next/server";
-import { getUserContext } from "@/lib/odusbaba/context";
-import { applyRules } from "@/lib/odusbaba/rules";
+// app/api/odusbaba/route.ts
 
-export async function GET(req: NextRequest) {
-  try {
-    // 1. Get user context
-    const context = await getUserContext(req);
+import { NextResponse } from "next/server";
+import { evaluateRules } from "@/lib/odusbaba/rules";
 
-    // 2. Apply governance rules
-    const allowed = applyRules(context);
-    if (!allowed) {
-      return NextResponse.json(
-        { error: "Access denied" },
-        { status: 403 }
-      );
-    }
+export async function POST(req: Request) {
+  const body = await req.json();
 
-    // 3. Return status & context snapshot
-    return NextResponse.json({
-      status: "operational",
-      contextSnapshot: context,
-      timestamp: new Date().toISOString(),
-    });
-  } catch (err) {
-    return NextResponse.json(
-      { error: "Internal Server Error", details: (err as Error).message },
-      { status: 500 }
-    );
-  }
+  // TEMP: unauthenticated safe context
+  const context = {
+    user: null,
+    action: body.action,
+    payload: body.payload,
+  };
+
+  // ODUSBABA rule evaluation
+  evaluateRules(context);
+
+  return NextResponse.json({
+    success: true,
+    message: "ODUSBABA request processed",
+  });
 }
