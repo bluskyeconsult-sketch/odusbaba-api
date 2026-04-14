@@ -1,0 +1,15 @@
+export default function JobFilters() {
+  return (
+    <div className="flex gap-4 mb-4">
+      <input
+        placeholder="Search jobs"
+        className="px-4 py-2 rounded bg-black/20"
+      />
+
+      <input
+        placeholder="Location"
+        className="px-4 py-2 rounded bg-black/20"
+      />
+    </div>
+  );
+}
