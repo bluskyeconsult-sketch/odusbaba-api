@@ -1,5 +1,6 @@
-export const STRIPE_PLAN_CAPABILITIES: Record<string, string[]> = {
-  free: ["job:view"],
-  jobseeker: ["job:view", "job:apply"],
-  employer: ["job:view", "job:post"],
-};
+export function mapStripePlanToTier(planId?: string) {
+  if (!planId) return "public";
+  if (planId.includes("employer")) return "employer";
+  if (planId.includes("pro")) return "subscriber";
+  return "public";
+}
