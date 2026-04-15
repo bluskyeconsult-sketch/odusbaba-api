@@ -1,8 +1,7 @@
 import { getUserApplications } from "@/lib/jobs/getUserApplications";
 
 export default async function ApplicationsPage() {
-  // TEMP SAFE PLACEHOLDER
-  // Replace with real auth user later
+  // TEMP user until auth is wired
   const userId = "placeholder-user-id";
 
   const applications = await getUserApplications(userId);
