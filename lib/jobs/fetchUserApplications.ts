@@ -1,14 +1,17 @@
-import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 
 export async function fetchUserApplications(userId: string) {
-  const supabase = createServerSupabaseClient();
+  const supabase = createClient();
 
   const { data, error } = await supabase
     .from("job_applications")
     .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
+    .eq("user_id", userId);
 
-  if (error) throw error;
-  return data || [];
+  if (error) {
+    console.error(error);
+    return [];
+  }
+
+  return data ?? [];
 }
