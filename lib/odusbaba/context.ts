@@ -1,4 +1,4 @@
 import { mapStripePlanToTier } from "./stripe-capability-map";
 
-const tier = mapStripePlanToTier(user.stripe_plan_id);
+const tier = "public";
 const capabilities = resolveViewerCapabilities(tier);
