@@ -1,23 +1,38 @@
-export default function JobPostForm({ canPost }: { canPost: boolean }) {
-  if (!canPost) {
-    return (
-      <div className="border p-6 rounded bg-white/5">
-        <p className="text-sm text-slate-400">
-          Upgrade to employer tier to post jobs.
-        </p>
-      </div>
-    );
+"use client";
+
+import { useState } from "react";
+
+export default function JobPostForm({ user }: { user: any }) {
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: any) {
+    e.preventDefault();
+    setLoading(true);
+
+    const form = new FormData(e.target);
+
+    await fetch("/api/jobs/create", {
+      method: "POST",
+      body: JSON.stringify({
+        title: form.get("title"),
+        description: form.get("description"),
+        salary: form.get("salary"),
+        location: form.get("location"),
+      }),
+    });
+
+    setLoading(false);
+    alert("Job submitted for review");
   }
 
   return (
-    <form className="space-y-4">
-      <input placeholder="Job title" className="w-full p-3 rounded bg-black/20" />
-      <input placeholder="Company name" className="w-full p-3 rounded bg-black/20" />
-      <input placeholder="Location" className="w-full p-3 rounded bg-black/20" />
-      <textarea placeholder="Job description" className="w-full p-3 rounded bg-black/20" />
-
-      <button className="px-4 py-2 bg-blue-600 rounded text-white">
-        Submit Job
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <input name="title" placeholder="Job title" required className="input" />
+      <textarea name="description" placeholder="Job description" required className="input" />
+      <input name="salary" placeholder="Salary range" className="input" />
+      <input name="location" placeholder="Location" className="input" />
+      <button disabled={loading} className="btn-primary">
+        {loading ? "Submitting..." : "Submit Job"}
       </button>
     </form>
   );
